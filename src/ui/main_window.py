@@ -115,8 +115,10 @@ class MainWindow(QMainWindow):
         self.storage_service = StorageService(self.settings_manager)
         self.execution_service = ExecutionService()
 
+        from src.utils.helpers import get_resource_path
+
         self.setWindowTitle(APP_NAME)
-        self.setWindowIcon(QIcon("resources/icons/openmodelica.svg"))
+        self.setWindowIcon(QIcon(str(get_resource_path("resources/icons/openmodelica.svg"))))
         self.resize(1050, 800)
 
         self._init_ui()
@@ -127,6 +129,8 @@ class MainWindow(QMainWindow):
         self.logger.info("OpenModelica Simulation Manager initialized successfully.")
 
     def _init_ui(self) -> None:
+        from src.utils.helpers import get_resource_path
+
         # 1. Top Toolbar
         self.toolbar = MainToolBar(self)
         self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.toolbar)
@@ -140,8 +144,9 @@ class MainWindow(QMainWindow):
         self.console_panel = ConsolePanel(self)
         self.results_panel = ResultsPanel(self)
 
-        self.bottom_tabs.addTab(self.console_panel, QIcon("resources/icons/info.svg"), "Execution Console")
-        self.bottom_tabs.addTab(self.results_panel, QIcon("resources/icons/openmodelica.svg"), "Results & Analysis Plot")
+        self.bottom_tabs.addTab(self.console_panel, QIcon(str(get_resource_path("resources/icons/info.svg"))), "Execution Console")
+        self.bottom_tabs.addTab(self.results_panel, QIcon(str(get_resource_path("resources/icons/openmodelica.svg"))), "Results & Analysis Plot")
+
 
         self.splitter.addWidget(self.config_panel)
         self.splitter.addWidget(self.bottom_tabs)
@@ -250,8 +255,9 @@ class MainWindow(QMainWindow):
         event.accept()
 
     def _apply_theme(self, theme_name: str) -> None:
+        from src.utils.helpers import get_resource_path
         style_file = "dark_theme.qss" if theme_name == THEME_DARK else "light_theme.qss"
-        style_path = Path("resources/styles") / style_file
+        style_path = get_resource_path(f"resources/styles/{style_file}")
 
         if style_path.exists():
             qss_content = style_path.read_text(encoding="utf-8")
@@ -260,6 +266,7 @@ class MainWindow(QMainWindow):
             self.results_panel.set_theme(theme_name)
         else:
             self.logger.warning(f"Stylesheet not found: {style_path}")
+
 
     def _toggle_theme(self) -> None:
         current_theme = self.settings_manager.get_theme()

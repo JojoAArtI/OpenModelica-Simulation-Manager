@@ -48,3 +48,14 @@
 [2026-08-04 19:27:29] [INFO] [OpenModelicaManager]: Theme switched to: DARK
 [2026-08-04 19:27:31] [WARNING] [OpenModelicaManager]: Stylesheet not found: resources\styles\dark_theme.qss
 [2026-08-04 19:27:31] [INFO] [OpenModelicaManager]: Theme switched to: DARK
+[2026-08-04 19:33:10] [INFO] [OpenModelicaManager]: Starting OpenModelica Simulation Manager...
+[2026-08-04 19:33:11] [INFO] [OpenModelicaManager]: OpenModelica Simulation Manager initialized successfully.
+[2026-08-04 19:33:13] [INFO] [OpenModelicaManager]: Theme switched to: LIGHT
+[2026-08-04 19:33:14] [INFO] [OpenModelicaManager]: Theme switched to: DARK
+[2026-08-04 19:33:15] [INFO] [OpenModelicaManager]: Theme switched to: LIGHT
+[2026-08-04 19:33:26] [INFO] [OpenModelicaManager]: Theme switched to: DARK
+[2026-08-04 19:33:26] [INFO] [OpenModelicaManager]: Theme switched to: LIGHT
+[2026-08-04 19:33:36] [INFO] [OpenModelicaManager]: Starting OpenModelica Simulation Manager...
+[2026-08-04 19:33:37] [INFO] [OpenModelicaManager]: OpenModelica Simulation Manager initialized successfully.
+[2026-08-04 19:35:16] [INFO] [OpenModelicaManager]: Initiating simulation run for 'TwoConnectedTanks.py'
+[2026-08-04 19:35:19] [INFO] [OpenModelicaManager]: Simulation completed successfully in 2.99s.
