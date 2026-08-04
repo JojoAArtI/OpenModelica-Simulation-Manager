@@ -9,7 +9,7 @@
 
 ---
 
-## 📌 Project Overview
+##  Project Overview
 
 **OpenModelica Simulation Manager** is a desktop software application designed for engineers, researchers, and developers working with [OpenModelica](https://openmodelica.org/) model executables (such as `TwoConnectedTanks.exe`). 
 
@@ -17,7 +17,7 @@ It wraps the command-line execution experience into a modern, responsive GUI ins
 
 ---
 
-## 🏗️ Architecture & Component Design
+##  Architecture & Component Design
 
 The application follows strict **SOLID principles**, **Separation of Concerns**, and **Model-View-Controller / Model-View-ViewModel (MVC/MVVM)** architectural patterns.
 
@@ -55,16 +55,16 @@ graph TD
 
 ---
 
-## 🚀 Features
+##  Features
 
-- 📁 **Executable Selector**: Read-only textbox with native file browser, drag-and-drop file support, recent files history dropdown, and status badges (`✔ Executable Loaded` / `❌ Invalid executable`).
-- ⏱️ **SpinBox Time Inputs**: Integer inputs for Start Time (0..4) and Stop Time (1..4).
-- ⚡ **Realtime Validation**: Instant validation enforcing `0 <= start_time < stop_time < 5`. Automatically disables the Run button when parameters are invalid.
-- 💻 **Live Command Preview**: Real-time CLI command string display with one-click copy button.
-- 🔄 **Non-Blocking Asynchronous Execution**: Prevents GUI freezing during solver execution; supports process cancellation via `ESC` or Stop button.
-- 📊 **Live Console Streaming**: Dark monospace text log view streaming `stdout` and `stderr` live with distinct color coding.
-- 🌗 **Dark & Light Engineering Themes**: Qt Creator styled themes easily toggled via the main toolbar.
-- 📜 **Execution History & Log Persistence**: Persists run history (executable, timestamp, duration, exit code) using `QSettings` and writes multi-handler logs (`logs/app.log`, `logs/execution.log`).
+-  **Executable Selector**: Read-only textbox with native file browser, drag-and-drop file support, recent files history dropdown, and status badges (`✔ Executable Loaded` / `❌ Invalid executable`).
+-  **SpinBox Time Inputs**: Integer inputs for Start Time (0..4) and Stop Time (1..4).
+-  **Realtime Validation**: Instant validation enforcing `0 <= start_time < stop_time < 5`. Automatically disables the Run button when parameters are invalid.
+-  **Live Command Preview**: Real-time CLI command string display with one-click copy button.
+-  **Non-Blocking Asynchronous Execution**: Prevents GUI freezing during solver execution; supports process cancellation via `ESC` or Stop button.
+-  **Live Console Streaming**: Dark monospace text log view streaming `stdout` and `stderr` live with distinct color coding.
+-  **Dark & Light Engineering Themes**: Qt Creator styled themes easily toggled via the main toolbar.
+-  **Execution History & Log Persistence**: Persists run history (executable, timestamp, duration, exit code) using `QSettings` and writes multi-handler logs (`logs/app.log`, `logs/execution.log`).
 
 ---
 
@@ -129,7 +129,7 @@ OpenModelica Simulation Manager/
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/OpenModelica-Simulation-Manager.git
+   git clone https://github.com/JojoAArtI/OpenModelica-Simulation-Manager.git
    cd "OpenModelica Simulation Manager"
    ```
 
