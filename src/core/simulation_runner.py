@@ -2,6 +2,7 @@
 
 import os
 import subprocess
+import threading
 import time
 from typing import List, Optional
 from PyQt6.QtCore import QObject, pyqtSignal
@@ -33,17 +34,27 @@ class SimulationRunner(QObject):
             try:
                 self.status_updated.emit("Cancelling simulation process...")
                 self._process.terminate()
-                # Give process a moment to terminate gracefully, else kill
                 time.sleep(0.2)
                 if self._process.poll() is None:
                     self._process.kill()
             except Exception as e:
                 self.execution_error.emit(f"Error while terminating process: {e}")
 
+    def _read_pipe(self, pipe, signal_emitter, chunk_list):
+        """Reads pipe line-by-line concurrently until EOF."""
+        if not pipe:
+            return
+        for line in iter(pipe.readline, ""):
+            if self._is_cancelled:
+                break
+            chunk_list.append(line)
+            signal_emitter.emit(line)
+        pipe.close()
+
     def run(self) -> None:
-        """Executes the simulation subprocess and streams stdout/stderr live."""
+        """Executes the simulation subprocess with concurrent stdout/stderr streaming."""
         command_args = CommandBuilder.build_command_args(self.config)
-        command_str = CommandBuilder.build_preview_string(self.config)
+        command_str = CommandBuilder.build_preview_string(self.config, relative=False)
 
         if not command_args:
             self.execution_error.emit("Invalid command: Empty argument list.")
@@ -57,7 +68,6 @@ class SimulationRunner(QObject):
         self.stdout_line_emitted.emit(f"[INFO] Executing command: {command_str}\n")
 
         try:
-            # Set environment to unbuffered output if running python script mock
             env = os.environ.copy()
             env["PYTHONUNBUFFERED"] = "1"
 
@@ -71,21 +81,26 @@ class SimulationRunner(QObject):
                 env=env,
             )
 
-            # Read stdout line by line
-            if self._process.stdout:
-                for line in iter(self._process.stdout.readline, ""):
-                    if self._is_cancelled:
-                        break
-                    stdout_chunks.append(line)
-                    self.stdout_line_emitted.emit(line)
+            # Spawn concurrent reader threads for stdout and stderr to prevent deadlocks
+            t_stdout = threading.Thread(
+                target=self._read_pipe,
+                args=(self._process.stdout, self.stdout_line_emitted, stdout_chunks),
+                daemon=True,
+            )
+            t_stderr = threading.Thread(
+                target=self._read_pipe,
+                args=(self._process.stderr, self.stderr_line_emitted, stderr_chunks),
+                daemon=True,
+            )
 
-            # Read stderr line by line
-            if self._process.stderr:
-                for line in iter(self._process.stderr.readline, ""):
-                    stderr_chunks.append(line)
-                    self.stderr_line_emitted.emit(line)
+            t_stdout.start()
+            t_stderr.start()
 
+            # Wait for process and reader threads to finish
             self._process.wait()
+            t_stdout.join()
+            t_stderr.join()
+
             exit_code = self._process.returncode if not self._is_cancelled else -15
 
         except FileNotFoundError as e:
@@ -146,3 +161,4 @@ class SimulationRunner(QObject):
             )
 
         self.execution_finished.emit(result)
+
