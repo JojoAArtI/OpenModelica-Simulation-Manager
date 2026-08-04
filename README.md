@@ -74,7 +74,7 @@ graph TD
 
 ---
 
-## 🛠️ Directory Structure
+##  Directory Structure
 
 ```text
 OpenModelica Simulation Manager/
@@ -193,7 +193,7 @@ python -m pytest tests/ -v
 
 ---
 
-## 📋 Validation Rules
+##  Validation Rules
 
 | Parameter | Type | Validation Rule |
 | :--- | :--- | :--- |
