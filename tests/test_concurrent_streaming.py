@@ -1,13 +1,13 @@
-"""Integration test verifying concurrent stdout and stderr streaming via ExecutionService."""
+"""Integration test verifying concurrent stdout and stderr streaming in SimulationRunner."""
 
 import sys
 import textwrap
 from pathlib import Path
 import pytest
-from PyQt6.QtCore import QCoreApplication, QEventLoop, QTimer
+from PyQt6.QtCore import QCoreApplication, QEventLoop, QThread
 
 from src.models.simulation_config import SimulationConfig
-from src.services.execution_service import ExecutionService
+from src.core.simulation_runner import SimulationRunner
 
 
 @pytest.fixture(autouse=True)
@@ -42,7 +42,10 @@ def test_concurrent_stdout_stderr_streaming(tmp_path):
         stop_time=4,
     )
 
-    service = ExecutionService()
+    thread = QThread()
+    runner = SimulationRunner(config)
+    runner.moveToThread(thread)
+
     stdout_lines = []
     stderr_lines = []
     result_holder = []
@@ -55,16 +58,18 @@ def test_concurrent_stdout_stderr_streaming(tmp_path):
 
     def on_finished(res):
         result_holder.append(res)
+        thread.quit()
         loop.quit()
 
     loop = QEventLoop()
-    service.stdout_streamed.connect(on_stdout)
-    service.stderr_streamed.connect(on_stderr)
-    service.simulation_finished.connect(on_finished)
+    thread.started.connect(runner.run)
+    runner.stdout_line_emitted.connect(on_stdout)
+    runner.stderr_line_emitted.connect(on_stderr)
+    runner.execution_finished.connect(on_finished)
 
-    QTimer.singleShot(10, lambda: service.run_simulation(config))
+    thread.start()
     loop.exec()
-
+    thread.wait()
 
     assert len(result_holder) == 1
     res = result_holder[0]
