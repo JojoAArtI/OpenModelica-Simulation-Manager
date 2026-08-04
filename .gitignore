@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Pytest / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+logs/*.log
+
+# PyInstaller / Build outputs (Keep mock_executable/TwoConnectedTanks.exe explicitly)
+build/
+dist/
+*.manifest
+*.spec
+
+# IDE / OS Settings
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
