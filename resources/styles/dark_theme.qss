@@ -1,0 +1,145 @@
+/* Dark Theme QSS stylesheet for OpenModelica Simulation Manager */
+
+QMainWindow {
+    background-color: #0d1117;
+    color: #c9d1d9;
+}
+
+QWidget {
+    font-family: "Segoe UI", "SF Pro Display", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    font-size: 13px;
+    color: #c9d1d9;
+}
+
+/* ToolBar */
+QToolBar#MainToolBar {
+    background-color: #161b22;
+    border-bottom: 1px solid #30363d;
+    padding: 4px;
+    spacing: 8px;
+}
+
+QToolBar QLabel#ToolbarBrandLabel {
+    color: #58a6ff;
+    font-size: 14px;
+}
+
+/* Card Container */
+QFrame#CardWidget {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+}
+
+QLabel#CardTitle {
+    color: #f0f6fc;
+    border-bottom: 1px solid #21262d;
+    padding-bottom: 6px;
+}
+
+/* Command Preview Card */
+QFrame#CommandPreviewCard {
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+}
+
+/* Text Inputs & Spinboxes */
+QLineEdit, QSpinBox, QComboBox {
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: #c9d1d9;
+    selection-background-color: #1f6feb;
+    selection-color: #ffffff;
+}
+
+QLineEdit:focus, QSpinBox:focus, QComboBox:focus {
+    border: 1px solid #58a6ff;
+}
+
+QSpinBox::up-button, QSpinBox::down-button {
+    width: 18px;
+    background-color: #21262d;
+    border-radius: 3px;
+}
+
+QSpinBox::up-button:hover, QSpinBox::down-button:hover {
+    background-color: #30363d;
+}
+
+/* Buttons */
+QPushButton {
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 6px 14px;
+    color: #c9d1d9;
+    font-weight: 500;
+}
+
+QPushButton:hover {
+    background-color: #30363d;
+    border-color: #8b949e;
+}
+
+QPushButton:pressed {
+    background-color: #161b22;
+}
+
+QPushButton:disabled {
+    background-color: #161b22;
+    border-color: #21262d;
+    color: #484f58;
+}
+
+/* Primary Run Button */
+QPushButton#RunButton {
+    background-color: #238636;
+    border: 1px solid #2ea44f;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+QPushButton#RunButton:hover {
+    background-color: #2ea44f;
+    border-color: #3fb950;
+}
+
+QPushButton#RunButton:pressed {
+    background-color: #1e7e34;
+}
+
+QPushButton#RunButton:disabled {
+    background-color: #21262d;
+    border-color: #30363d;
+    color: #484f58;
+}
+
+/* Console Output Text Edit */
+QTextEdit#ConsoleOutput {
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: #c9d1d9;
+    padding: 8px;
+}
+
+/* Splitter */
+QSplitter::handle {
+    background-color: #30363d;
+    height: 3px;
+}
+
+QSplitter::handle:hover {
+    background-color: #58a6ff;
+}
+
+/* Status Bar */
+QStatusBar {
+    background-color: #161b22;
+    border-top: 1px solid #30363d;
+    color: #8b949e;
+}
