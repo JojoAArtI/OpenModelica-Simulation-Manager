@@ -1,0 +1,126 @@
+/* Light Theme QSS stylesheet for OpenModelica Simulation Manager */
+
+QMainWindow {
+    background-color: #f6f8fa;
+    color: #24292f;
+}
+
+QWidget {
+    font-family: "Segoe UI", "SF Pro Display", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    font-size: 13px;
+    color: #24292f;
+}
+
+/* ToolBar */
+QToolBar#MainToolBar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #d0d7de;
+    padding: 4px;
+    spacing: 8px;
+}
+
+QToolBar QLabel#ToolbarBrandLabel {
+    color: #0969da;
+    font-size: 14px;
+}
+
+/* Card Container */
+QFrame#CardWidget {
+    background-color: #ffffff;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+}
+
+QLabel#CardTitle {
+    color: #24292f;
+    border-bottom: 1px solid #d0d7de;
+    padding-bottom: 6px;
+}
+
+/* Command Preview Card */
+QFrame#CommandPreviewCard {
+    background-color: #f6f8fa;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+}
+
+/* Text Inputs & Spinboxes */
+QLineEdit, QSpinBox, QComboBox {
+    background-color: #ffffff;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: #24292f;
+    selection-background-color: #0969da;
+    selection-color: #ffffff;
+}
+
+QLineEdit:focus, QSpinBox:focus, QComboBox:focus {
+    border: 1px solid #0969da;
+}
+
+/* Buttons */
+QPushButton {
+    background-color: #f6f8fa;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    padding: 6px 14px;
+    color: #24292f;
+    font-weight: 500;
+}
+
+QPushButton:hover {
+    background-color: #f3f4f6;
+    border-color: #8c959f;
+}
+
+QPushButton:disabled {
+    background-color: #f6f8fa;
+    border-color: #d0d7de;
+    color: #8c959f;
+}
+
+/* Primary Run Button */
+QPushButton#RunButton {
+    background-color: #1f883d;
+    border: 1px solid #1a7f37;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+QPushButton#RunButton:hover {
+    background-color: #1a7f37;
+}
+
+QPushButton#RunButton:disabled {
+    background-color: #eaeef2;
+    border-color: #d0d7de;
+    color: #8c959f;
+}
+
+/* Console Output Text Edit */
+QTextEdit#ConsoleOutput {
+    background-color: #0d1117; /* Console remains dark for optimal log readability */
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    color: #c9d1d9;
+    padding: 8px;
+}
+
+/* Splitter */
+QSplitter::handle {
+    background-color: #d0d7de;
+    height: 3px;
+}
+
+QSplitter::handle:hover {
+    background-color: #0969da;
+}
+
+/* Status Bar */
+QStatusBar {
+    background-color: #ffffff;
+    border-top: 1px solid #d0d7de;
+    color: #57606a;
+}
