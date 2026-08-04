@@ -23,3 +23,5 @@
 [2026-08-04 19:22:20] [INFO] [OpenModelicaManager]: OpenModelica Simulation Manager initialized successfully.
 [2026-08-04 19:22:22] [INFO] [OpenModelicaManager]: Initiating simulation run for 'TwoConnectedTanks.py'
 [2026-08-04 19:22:24] [INFO] [OpenModelicaManager]: Simulation completed successfully in 2.09s.
+[2026-08-04 19:28:28] [INFO] [OpenModelicaManager]: Theme switched to: DARK
+[2026-08-04 19:28:29] [INFO] [OpenModelicaManager]: Theme switched to: LIGHT

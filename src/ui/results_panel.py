@@ -45,12 +45,23 @@ def parse_simulation_output(stdout_text: str) -> Dict[str, List[float]]:
         "Tank2_Height": [],
     }
 
-    pattern = re.compile(
-        r"Time:\s*([\d\.]+)\s*s?\s*\|\s*Step:\s*\d+\s*\|\s*Tank1_Height:\s*([\d\.]+)\s*m?\s*\|\s*Tank2_Height:\s*([\d\.]+)\s*m?"
+    if not stdout_text:
+        return data
+
+    # 1. Primary Regex Pattern (TwoConnectedTanks output)
+    pattern1 = re.compile(
+        r"Time:\s*([\d\.]+)\s*s?\s*\|\s*Step:\s*\d+\s*\|\s*Tank1_Height:\s*([\d\.]+)\s*m?\s*\|\s*Tank2_Height:\s*([\d\.]+)\s*m?",
+        re.IGNORECASE,
+    )
+
+    # 2. Generic key-value fallback pattern
+    pattern2 = re.compile(
+        r"(?:time|t)\s*[:=]\s*([\d\.]+).*?(?:tank1|h1|val1)\s*[:=]\s*([\d\.]+).*?(?:tank2|h2|val2)\s*[:=]\s*([\d\.]+)",
+        re.IGNORECASE,
     )
 
     for line in stdout_text.splitlines():
-        match = pattern.search(line)
+        match = pattern1.search(line) or pattern2.search(line)
         if match:
             try:
                 t = float(match.group(1))
@@ -128,9 +139,11 @@ class ResultsPanel(QWidget):
     def load_stdout_data(self, stdout_text: str) -> None:
         """Parses stdout log text and updates plot canvas."""
         parsed = parse_simulation_output(stdout_text)
-        if parsed and parsed["Time"]:
+        if parsed and parsed.get("Time"):
             self._current_data = parsed
             self._replot()
+        else:
+            self.clear_plot()
 
     def clear_plot(self) -> None:
         """Clears plot and displays placeholder message."""

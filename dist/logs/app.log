@@ -27,3 +27,24 @@
 [2026-08-04 19:21:50] [WARNING] [OpenModelicaManager]: Cancellation requested by user.
 [2026-08-04 19:21:51] [ERROR] [OpenModelicaManager]: Simulation failed with exit code -15.
 [2026-08-04 19:21:53] [INFO] [OpenModelicaManager]: Simulation completed successfully in 1m 28.10s.
+[2026-08-04 19:25:44] [INFO] [OpenModelicaManager]: Starting OpenModelica Simulation Manager...
+[2026-08-04 19:25:45] [WARNING] [OpenModelicaManager]: Stylesheet not found: resources\styles\light_theme.qss
+[2026-08-04 19:25:45] [INFO] [OpenModelicaManager]: OpenModelica Simulation Manager initialized successfully.
+[2026-08-04 19:25:50] [INFO] [OpenModelicaManager]: Initiating simulation run for 'TwoConnectedTanks.py'
+[2026-08-04 19:25:52] [INFO] [OpenModelicaManager]: Starting OpenModelica Simulation Manager...
+[2026-08-04 19:25:52] [WARNING] [OpenModelicaManager]: Stylesheet not found: resources\styles\light_theme.qss
+[2026-08-04 19:25:52] [INFO] [OpenModelicaManager]: OpenModelica Simulation Manager initialized successfully.
+[2026-08-04 19:25:55] [INFO] [OpenModelicaManager]: Simulation completed successfully in 4.72s.
+[2026-08-04 19:25:59] [WARNING] [OpenModelicaManager]: Stylesheet not found: resources\styles\dark_theme.qss
+[2026-08-04 19:25:59] [INFO] [OpenModelicaManager]: Theme switched to: DARK
+[2026-08-04 19:26:03] [WARNING] [OpenModelicaManager]: Stylesheet not found: resources\styles\dark_theme.qss
+[2026-08-04 19:26:03] [INFO] [OpenModelicaManager]: Theme switched to: DARK
+[2026-08-04 19:27:11] [INFO] [OpenModelicaManager]: Starting OpenModelica Simulation Manager...
+[2026-08-04 19:27:11] [WARNING] [OpenModelicaManager]: Stylesheet not found: resources\styles\light_theme.qss
+[2026-08-04 19:27:11] [INFO] [OpenModelicaManager]: OpenModelica Simulation Manager initialized successfully.
+[2026-08-04 19:27:18] [INFO] [OpenModelicaManager]: Initiating simulation run for 'TwoConnectedTanks.py'
+[2026-08-04 19:27:22] [INFO] [OpenModelicaManager]: Simulation completed successfully in 3.11s.
+[2026-08-04 19:27:29] [WARNING] [OpenModelicaManager]: Stylesheet not found: resources\styles\dark_theme.qss
+[2026-08-04 19:27:29] [INFO] [OpenModelicaManager]: Theme switched to: DARK
+[2026-08-04 19:27:31] [WARNING] [OpenModelicaManager]: Stylesheet not found: resources\styles\dark_theme.qss
+[2026-08-04 19:27:31] [INFO] [OpenModelicaManager]: Theme switched to: DARK

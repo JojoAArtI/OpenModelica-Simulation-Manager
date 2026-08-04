@@ -1,6 +1,6 @@
-/* Dark Theme QSS stylesheet for OpenModelica Simulation Manager */
+/* Comprehensive Dark Theme QSS stylesheet for OpenModelica Simulation Manager */
 
-QMainWindow {
+QMainWindow, QDialog, QMessageBox {
     background-color: #0d1117;
     color: #c9d1d9;
 }
@@ -15,7 +15,7 @@ QWidget {
 QToolBar#MainToolBar {
     background-color: #161b22;
     border-bottom: 1px solid #30363d;
-    padding: 4px;
+    padding: 6px 10px;
     spacing: 8px;
 }
 
@@ -69,6 +69,14 @@ QSpinBox::up-button:hover, QSpinBox::down-button:hover {
     background-color: #30363d;
 }
 
+QComboBox QAbstractItemView {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    selection-background-color: #1f6feb;
+    selection-color: #ffffff;
+    color: #c9d1d9;
+}
+
 /* Buttons */
 QPushButton {
     background-color: #21262d;
@@ -94,7 +102,7 @@ QPushButton:disabled {
     color: #484f58;
 }
 
-/* Primary Run Button */
+/* Primary Run & Cancel Buttons */
 QPushButton#RunButton {
     background-color: #238636;
     border: 1px solid #2ea44f;
@@ -118,7 +126,81 @@ QPushButton#RunButton:disabled {
     color: #484f58;
 }
 
-/* Console Output Text Edit */
+QPushButton#CancelButton {
+    background-color: #da3633;
+    border: 1px solid #f85149;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+QPushButton#CancelButton:hover {
+    background-color: #f85149;
+}
+
+/* Tab Widget & Tab Bar */
+QTabWidget::pane {
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    background-color: #161b22;
+    top: -1px;
+}
+
+QTabBar::tab {
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    border-bottom: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    padding: 8px 16px;
+    margin-right: 4px;
+    color: #8b949e;
+    font-weight: 600;
+}
+
+QTabBar::tab:selected {
+    background-color: #161b22;
+    color: #58a6ff;
+    border-bottom: 2px solid #58a6ff;
+}
+
+QTabBar::tab:hover:!selected {
+    background-color: #161b22;
+    color: #c9d1d9;
+}
+
+/* Table Widget (Execution History) */
+QTableWidget {
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    gridline-color: #21262d;
+    color: #c9d1d9;
+    border-radius: 6px;
+}
+
+QTableWidget::item {
+    padding: 6px;
+}
+
+QTableWidget::item:selected {
+    background-color: #1f6feb;
+    color: #ffffff;
+}
+
+QHeaderView::section {
+    background-color: #161b22;
+    color: #f0f6fc;
+    font-weight: bold;
+    padding: 6px;
+    border: 1px solid #30363d;
+}
+
+QTableCornerButton::section {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+}
+
+/* TextEdits (Console) */
 QTextEdit#ConsoleOutput {
     background-color: #0d1117;
     border: 1px solid #30363d;
@@ -127,10 +209,29 @@ QTextEdit#ConsoleOutput {
     padding: 8px;
 }
 
+/* Checkboxes */
+QCheckBox {
+    color: #c9d1d9;
+    spacing: 6px;
+}
+
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #30363d;
+    border-radius: 3px;
+    background-color: #0d1117;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #1f6feb;
+    border-color: #58a6ff;
+}
+
 /* Splitter */
 QSplitter::handle {
     background-color: #30363d;
-    height: 3px;
+    height: 4px;
 }
 
 QSplitter::handle:hover {
