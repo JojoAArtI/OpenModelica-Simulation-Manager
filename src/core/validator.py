@@ -17,16 +17,18 @@ from src.utils.helpers import is_executable_file
 
 @dataclass
 class ValidationResult:
-    """Encapsulates validation result status and feedback message.
+    """Encapsulates validation result status, feedback message, and badge UI state.
 
     Attributes:
         is_valid: Boolean indicating whether inputs meet all criteria.
         message: Human-readable feedback message describing validation status.
-        badge_text: Short status text e.g. "✔ Executable Loaded" or "❌ Invalid executable".
+        badge_text: Short status text e.g. "✔ Executable Loaded", "❌ Invalid executable", "ℹ No executable selected".
+        badge_state: Visual state category e.g. "valid", "invalid", "neutral".
     """
     is_valid: bool
     message: str
     badge_text: str
+    badge_state: str = "neutral"
 
 
 class Validator:
@@ -43,14 +45,14 @@ class Validator:
             Tuple of (is_valid: bool, status_message: str).
         """
         if not path_str or not path_str.strip():
-            return False, "No executable selected. Please browse or drop a model executable."
+            return False, "Please select or drag & drop an OpenModelica simulation executable."
 
         p = Path(path_str.strip())
         if not p.exists():
             return False, f"File does not exist: '{p.name}'"
 
         if not p.is_file():
-            return False, f"Selected path is a directory, not an executable file."
+            return False, "Selected path is a directory, not an executable file."
 
         if not is_executable_file(p):
             return False, f"File exists but is not executable: '{p.name}'"
@@ -101,13 +103,14 @@ class Validator:
             config: SimulationConfig instance to validate.
 
         Returns:
-            ValidationResult containing status and UI badge text.
+            ValidationResult containing status, message, badge text, and state.
         """
-        if config is None:
+        if config is None or not config.executable_path.strip():
             return ValidationResult(
                 is_valid=False,
-                message="No simulation configuration provided.",
-                badge_text="❌ Invalid executable",
+                message="Please select or drag & drop an OpenModelica simulation executable.",
+                badge_text="ℹ No executable selected",
+                badge_state="neutral",
             )
 
         # 1. Check Executable
@@ -117,6 +120,7 @@ class Validator:
                 is_valid=False,
                 message=exe_msg,
                 badge_text="❌ Invalid executable",
+                badge_state="invalid",
             )
 
         # 2. Check Time Bounds
@@ -125,11 +129,13 @@ class Validator:
             return ValidationResult(
                 is_valid=False,
                 message=time_msg,
-                badge_text="✔ Executable Loaded",  # Executable itself is fine, but times invalid
+                badge_text="✔ Executable Loaded",  # Executable itself is valid, but times need fixing
+                badge_state="valid",
             )
 
         return ValidationResult(
             is_valid=True,
             message="Configuration valid. Ready to simulate.",
             badge_text="✔ Executable Loaded",
+            badge_state="valid",
         )
