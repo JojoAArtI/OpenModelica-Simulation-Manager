@@ -114,6 +114,7 @@ class MainWindow(QMainWindow):
         self.execution_service = ExecutionService()
 
         self.setWindowTitle(APP_NAME)
+        self.setWindowIcon(QIcon("resources/icons/openmodelica.svg"))
         self.resize(1000, 750)
 
         self._init_ui()
@@ -171,13 +172,17 @@ class MainWindow(QMainWindow):
         self.shortcut_browse = QShortcut(QKeySequence("Ctrl+O"), self)
         self.shortcut_browse.activated.connect(self.config_panel.browse_executable)
 
-        # Enter / Return -> Run simulation
-        self.shortcut_run = QShortcut(QKeySequence(Qt.Key.Key_Return), self)
-        self.shortcut_run.activated.connect(self._on_shortcut_run)
+        # Ctrl+Return / Ctrl+Enter -> Run simulation
+        self.shortcut_run_return = QShortcut(QKeySequence("Ctrl+Return"), self)
+        self.shortcut_run_return.activated.connect(self._on_shortcut_run)
 
-        # ESC -> Cancel simulation
+        self.shortcut_run_enter = QShortcut(QKeySequence("Ctrl+Enter"), self)
+        self.shortcut_run_enter.activated.connect(self._on_shortcut_run)
+
+        # ESC -> Cancel simulation when running
         self.shortcut_esc = QShortcut(QKeySequence(Qt.Key.Key_Escape), self)
         self.shortcut_esc.activated.connect(self._cancel_simulation)
+
 
     def _load_settings(self) -> None:
         # Window Geometry & Splitter state

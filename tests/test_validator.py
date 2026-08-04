@@ -47,3 +47,18 @@ def test_validate_executable_valid(tmp_path):
     
     is_valid, msg = Validator.validate_executable(str(exe_file))
     assert is_valid is True
+
+
+def test_validate_config_neutral_initial_state():
+    res = Validator.validate_config(None)
+    assert res.is_valid is False
+    assert res.badge_state == "neutral"
+    assert res.badge_text == "ℹ No executable selected"
+    assert "Please select or drag & drop" in res.message
+
+    empty_config = SimulationConfig(executable_path="", start_time=0, stop_time=4)
+    res_empty = Validator.validate_config(empty_config)
+    assert res_empty.is_valid is False
+    assert res_empty.badge_state == "neutral"
+    assert res_empty.badge_text == "ℹ No executable selected"
+

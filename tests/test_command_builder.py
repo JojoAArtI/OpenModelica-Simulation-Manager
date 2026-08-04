@@ -28,10 +28,14 @@ def test_command_builder_python_script():
 
 def test_command_builder_preview_string():
     config = SimulationConfig(
-        executable_path="TwoConnectedTanks.exe",
+        executable_path="C:/Models/TwoConnectedTanks.exe",
         start_time=0,
         stop_time=4,
     )
-    preview = CommandBuilder.build_preview_string(config)
-    assert "TwoConnectedTanks.exe" in preview
-    assert "-override=startTime=0,stopTime=4" in preview
+    relative_preview = CommandBuilder.build_preview_string(config, relative=True)
+    assert relative_preview == "TwoConnectedTanks.exe -override=startTime=0,stopTime=4"
+
+    abs_preview = CommandBuilder.build_preview_string(config, relative=False)
+    assert "TwoConnectedTanks.exe" in abs_preview
+    assert "-override=startTime=0,stopTime=4" in abs_preview
+
