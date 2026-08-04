@@ -54,8 +54,12 @@ class Validator:
         if not p.is_file():
             return False, "Selected path is a directory, not an executable file."
 
+        if p.suffix.lower() in {".log", ".txt", ".json", ".qss", ".md"}:
+            return False, f"Selected file '{p.name}' is a document/log file, not an executable binary."
+
         if not is_executable_file(p):
             return False, f"File exists but is not executable: '{p.name}'"
+
 
         return True, "Executable loaded successfully."
 

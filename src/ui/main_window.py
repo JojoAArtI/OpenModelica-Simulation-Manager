@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import Optional
 from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtGui import QShortcut, QKeySequence, QAction
+from PyQt6.QtGui import QShortcut, QKeySequence, QAction, QIcon
 from PyQt6.QtWidgets import (
     QMainWindow,
     QSplitter,
@@ -208,10 +208,13 @@ class MainWindow(QMainWindow):
         self.config_panel.set_times(last_start, last_stop)
 
         # Auto-load latest recent executable if valid
-        if recents:
-            first_recent = recents[0]
-            if Path(first_recent).exists():
-                self.config_panel.set_executable_path(first_recent)
+        from src.core.validator import Validator
+        for r in recents:
+            is_valid, _ = Validator.validate_executable(r)
+            if is_valid:
+                self.config_panel.set_executable_path(r)
+                break
+
 
     def closeEvent(self, event) -> None:
         """Saves geometry and application state before closing."""
