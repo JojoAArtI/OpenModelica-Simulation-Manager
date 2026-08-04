@@ -5,12 +5,11 @@
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://www.python.org/)
 [![PyQt6](https://img.shields.io/badge/PyQt-6.5%2B-green.svg)](https://pypi.org/project/PyQt6/)
 [![Matplotlib](https://img.shields.io/badge/Matplotlib-3.8%2B-blue.svg)](https://matplotlib.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Architecture: Clean OOP](https://img.shields.io/badge/Architecture-Clean%20OOP%20%2F%20SOLID-orange.svg)]()
 
 ---
 
-## 📌 Project Overview
+##  Project Overview
 
 **OpenModelica Simulation Manager** is a desktop engineering application designed for engineers, researchers, and developers working with [OpenModelica](https://openmodelica.org/) model executables (such as `TwoConnectedTanks.exe`). 
 
@@ -18,7 +17,7 @@ It wraps the command-line execution experience into a modern, responsive GUI ins
 
 ---
 
-## 🏗️ Architecture & Component Design
+##  Architecture & Component Design
 
 The application follows strict **SOLID principles**, **Separation of Concerns**, and **Model-View-Controller / Model-View-ViewModel (MVC/MVVM)** architectural patterns.
 
@@ -61,17 +60,17 @@ graph TD
 
 ---
 
-## 🚀 Key Features
+##  Key Features
 
-- 📁 **Executable Selector**: Read-only textbox with native file browser, drag-and-drop file support, recent files history dropdown, and status badges (`✔ Executable Loaded`, `❌ Invalid executable`, `ℹ No executable selected`).
-- ⏱️ **SpinBox Time Inputs**: Integer inputs for Start Time (0..4) and Stop Time (1..4).
-- ⚡ **Realtime Validation**: Instant validation enforcing `0 <= start_time < stop_time < 5`. Automatically disables the Run button when parameters are invalid.
-- 💻 **Live Command Preview**: Real-time CLI command display (relative name preview + absolute path hover tooltip) with a one-click copy button.
-- 🔄 **Concurrent Pipe Execution**: Non-blocking dual-thread stdout/stderr streaming prevents pipe deadlocks and GUI freezing; supports process cancellation via `ESC` or Stop button.
-- 📈 **Interactive Plotter Tab**: Embedded Matplotlib visualization tab automatically parsing solver output curves (e.g. `Tank 1 Height` & `Tank 2 Height` vs `Time`).
-- 💾 **PNG & CSV Exporters**: Export plots to high-res PNG images or export parsed time-series data to CSV spreadsheets.
-- 🌗 **Dark & Light Engineering Themes**: Qt Creator styled themes easily toggled via the main toolbar.
-- 📜 **Execution History & Log Persistence**: Persists run history (executable, timestamp, duration, exit code) using `QSettings` and writes multi-handler logs (`logs/app.log`, `logs/execution.log`).
+-  **Executable Selector**: Read-only textbox with native file browser, drag-and-drop file support, recent files history dropdown, and status badges (`✔ Executable Loaded`, `❌ Invalid executable`, `ℹ No executable selected`).
+-  **SpinBox Time Inputs**: Integer inputs for Start Time (0..4) and Stop Time (1..4).
+-  **Realtime Validation**: Instant validation enforcing `0 <= start_time < stop_time < 5`. Automatically disables the Run button when parameters are invalid.
+-  **Live Command Preview**: Real-time CLI command display (relative name preview + absolute path hover tooltip) with a one-click copy button.
+-  **Concurrent Pipe Execution**: Non-blocking dual-thread stdout/stderr streaming prevents pipe deadlocks and GUI freezing; supports process cancellation via `ESC` or Stop button.
+-  **Interactive Plotter Tab**: Embedded Matplotlib visualization tab automatically parsing solver output curves (e.g. `Tank 1 Height` & `Tank 2 Height` vs `Time`).
+-  **PNG & CSV Exporters**: Export plots to high-res PNG images or export parsed time-series data to CSV spreadsheets.
+-  **Dark & Light Engineering Themes**: Qt Creator styled themes easily toggled via the main toolbar.
+-  **Execution History & Log Persistence**: Persists run history (executable, timestamp, duration, exit code) using `QSettings` and writes multi-handler logs (`logs/app.log`, `logs/execution.log`).
 
 ---
 
@@ -130,7 +129,7 @@ OpenModelica Simulation Manager/
 
 ---
 
-## 📦 Installation & Setup
+##  Installation & Setup
 
 ### Requirements
 
@@ -143,7 +142,7 @@ OpenModelica Simulation Manager/
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/OpenModelica-Simulation-Manager.git
+   git clone https://github.com/JojoAArtI/OpenModelica-Simulation-Manager.git
    cd "OpenModelica Simulation Manager"
    ```
 
@@ -154,7 +153,7 @@ OpenModelica Simulation Manager/
 
 ---
 
-## 🏃 Running the Application
+##  Running the Application
 
 Launch the desktop application using:
 
@@ -174,7 +173,7 @@ python src/main.py
 
 ---
 
-## 📦 One-Click App Packaging (`build_app.py`)
+##  One-Click App Packaging (`build_app.py`)
 
 Package the entire application into a standalone executable (`dist/OpenModelicaSimulationManager.exe`):
 
@@ -184,7 +183,7 @@ python build_app.py
 
 ---
 
-## 🧪 Running Unit Tests
+##  Running Unit Tests
 
 Run all 19 automated tests with:
 
