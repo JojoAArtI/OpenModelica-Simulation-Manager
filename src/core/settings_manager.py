@@ -66,9 +66,6 @@ class SettingsManager:
         self.settings.setValue(SETTINGS_KEY_RECENT_EXECUTABLES, recents)
 
     # Simulation Defaults
-    def get_last_start_time(() -> int:
-        pass  # Will be defined in class body
-
     def get_last_start_time(self) -> int:
         return int(self.settings.value(SETTINGS_KEY_LAST_START_TIME, 0))
 
