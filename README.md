@@ -1,6 +1,6 @@
 # OpenModelica Simulation Manager
 
-I built this as a desktop app for running OpenModelica simulation executables without touching the command line. If you've ever had to babysit a `.exe` through a terminal, tweak start/stop times by hand, and then eyeball a CSV to see if the run actually worked — this is the tool I wished existed, so I made it. Python 3.11+, PyQt6 for the UI, Matplotlib for the plots.
+I built this as a desktop app for running OpenModelica simulation executables without touching the command line with the help of ai tools. If you've ever had to babysit a `.exe` through a terminal, tweak start/stop times by hand, and then eyeball a CSV to see if the run actually worked — this is the tool I wished existed, so I made it. Python 3.11+, PyQt6 for the UI, Matplotlib for the plots.
 
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://www.python.org/)
 [![PyQt6](https://img.shields.io/badge/PyQt-6.5%2B-green.svg)](https://pypi.org/project/PyQt6/)
