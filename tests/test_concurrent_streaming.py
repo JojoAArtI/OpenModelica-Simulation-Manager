@@ -1,13 +1,13 @@
-"""Integration test verifying concurrent stdout and stderr streaming in SimulationRunner."""
+"""Integration test verifying concurrent stdout and stderr streaming via ExecutionService."""
 
 import sys
-import tempfile
+import textwrap
 from pathlib import Path
 import pytest
 from PyQt6.QtCore import QCoreApplication, QEventLoop, QTimer
 
 from src.models.simulation_config import SimulationConfig
-from src.core.simulation_runner import SimulationRunner
+from src.services.execution_service import ExecutionService
 
 
 @pytest.fixture(autouse=True)
@@ -19,10 +19,7 @@ def init_qapp():
         yield QCoreApplication.instance()
 
 
-import textwrap
-
 def test_concurrent_stdout_stderr_streaming(tmp_path):
-    # Create a script that outputs to both stdout and stderr concurrently
     test_script = tmp_path / "stream_test.py"
     test_script.write_text(textwrap.dedent("""\
         import sys
@@ -39,14 +36,13 @@ def test_concurrent_stdout_stderr_streaming(tmp_path):
         sys.stderr.flush()
     """), encoding="utf-8")
 
-
     config = SimulationConfig(
         executable_path=str(test_script),
         start_time=0,
         stop_time=4,
     )
 
-    runner = SimulationRunner(config)
+    service = ExecutionService()
     stdout_lines = []
     stderr_lines = []
     result_holder = []
@@ -62,12 +58,13 @@ def test_concurrent_stdout_stderr_streaming(tmp_path):
         loop.quit()
 
     loop = QEventLoop()
-    runner.stdout_line_emitted.connect(on_stdout)
-    runner.stderr_line_emitted.connect(on_stderr)
-    runner.execution_finished.connect(on_finished)
+    service.stdout_streamed.connect(on_stdout)
+    service.stderr_streamed.connect(on_stderr)
+    service.simulation_finished.connect(on_finished)
 
-    QTimer.singleShot(10, runner.run)
+    QTimer.singleShot(10, lambda: service.run_simulation(config))
     loop.exec()
+
 
     assert len(result_holder) == 1
     res = result_holder[0]
