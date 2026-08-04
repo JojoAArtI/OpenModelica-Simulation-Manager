@@ -199,9 +199,6 @@ class ConfigurationPanel(QWidget):
             stop_time=self.stop_spin.value(),
         )
 
-    def _revalidate((self) -> None:
-        pass  # Defined below
-
     def _revalidate(self) -> None:
         """Executes real-time validation and updates UI indicators, preview, and run button state."""
         config = self.get_config()
