@@ -2,8 +2,8 @@
 
 from pathlib import Path
 from typing import Optional
-from PyQt6.QtCore import Qt, pyqtSignal, QUrl
-from PyQt6.QtGui import QDragEnterEvent, QDropEvent, QFont, QColor
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QDragEnterEvent, QDropEvent, QFont, QIcon
 from PyQt6.QtWidgets import (
     QWidget,
     QLineEdit,
@@ -11,7 +11,6 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QHBoxLayout,
     QFrame,
-    QTextEdit,
     QPushButton,
     QApplication,
 )
@@ -46,23 +45,27 @@ class DropLineEdit(QLineEdit):
 
 
 class StatusBadge(QLabel):
-    """Status badge displaying executable validation state (✔ Executable Loaded / ❌ Invalid executable)."""
+    """Status badge displaying executable validation state (✔ Executable Loaded / ❌ Invalid executable / ℹ No executable selected)."""
 
     def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
         self.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-        self.set_badge(False, "❌ Invalid executable")
+        self.set_badge("neutral", "ℹ No executable selected")
 
-    def set_badge(self, is_valid: bool, text: str) -> None:
-        """Updates text and background indicator color based on validation status."""
+    def set_badge(self, state: str, text: str) -> None:
+        """Updates text and styling based on state ('valid', 'invalid', 'neutral')."""
         self.setText(text)
-        if is_valid:
+        if state == "valid":
             self.setStyleSheet(
                 f"color: {COLOR_SUCCESS}; font-weight: bold; font-size: 13px; padding: 2px 6px;"
             )
-        else:
+        elif state == "invalid":
             self.setStyleSheet(
                 f"color: {COLOR_ERROR}; font-weight: bold; font-size: 13px; padding: 2px 6px;"
+            )
+        else:
+            self.setStyleSheet(
+                f"color: {COLOR_TEXT_MUTED}; font-weight: normal; font-size: 13px; padding: 2px 6px;"
             )
 
 
@@ -99,7 +102,7 @@ class CommandPreviewWidget(QFrame):
     def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
         self.setObjectName("CommandPreviewCard")
-        
+
         layout = QVBoxLayout(self)
         layout.setContentsMargins(10, 8, 10, 8)
         layout.setSpacing(6)
@@ -107,9 +110,9 @@ class CommandPreviewWidget(QFrame):
         header_layout = QHBoxLayout()
         header_label = QLabel("Command Preview")
         header_label.setStyleSheet("font-weight: bold; font-size: 11px; color: #8b949e;")
-        
+
         self.copy_btn = QPushButton("Copy")
-        self.copy_btn.setFixedSize(50, 22)
+        self.copy_btn.setFixedSize(55, 22)
         self.copy_btn.setToolTip("Copy command to clipboard")
         self.copy_btn.clicked.connect(self._copy_to_clipboard)
 
@@ -129,8 +132,15 @@ class CommandPreviewWidget(QFrame):
         layout.addLayout(header_layout)
         layout.addWidget(self.preview_text)
 
-    def set_command_text(self, text: str) -> None:
+    def set_command_text(self, text: str, tooltip_path: Optional[str] = None) -> None:
+        """Sets preview text and optional full path hover tooltip."""
         self.preview_text.setText(text)
+        if tooltip_path:
+            self.setToolTip(f"Full command:\n{tooltip_path}")
+            self.preview_text.setToolTip(f"Full command:\n{tooltip_path}")
+        else:
+            self.setToolTip("")
+            self.preview_text.setToolTip("")
 
     def _copy_to_clipboard(self) -> None:
         clipboard = QApplication.clipboard()
@@ -138,5 +148,4 @@ class CommandPreviewWidget(QFrame):
             clipboard.setText(self.preview_text.text())
             self.copy_btn.setText("Copied!")
             QApplication.processEvents()
-            # Reset text after brief moment
             self.copy_btn.setText("Copy")
