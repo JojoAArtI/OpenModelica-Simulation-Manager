@@ -64,7 +64,7 @@ class ConfigurationPanel(QWidget):
         self.exe_line_edit = DropLineEdit()
         self.exe_line_edit.setReadOnly(True)  # Per specification: read-only textbox
 
-        self.browse_btn = QPushButton("Browse...")
+        self.browse_btn = QPushButton(QIcon("resources/icons/folder.svg"), "Browse...")
         self.browse_btn.setToolTip("Browse filesystem for OpenModelica executable (Ctrl+O)")
 
         self.recent_combo = QComboBox()
@@ -109,21 +109,21 @@ class ConfigurationPanel(QWidget):
         # 3. Validation Feedback Label
         self.feedback_label = QLabel("")
         self.feedback_label.setWordWrap(True)
-        self.feedback_label.setStyleSheet("color: #d29922; font-size: 12px;")
+        self.feedback_label.setStyleSheet("color: #8b949e; font-size: 12px;")
 
         # 4. Command Preview Box
         self.command_preview = CommandPreviewWidget()
 
         # 5. Run Button Row
         btn_layout = QHBoxLayout()
-        self.run_btn = QPushButton("▶ Run Simulation")
+        self.run_btn = QPushButton(QIcon("resources/icons/play.svg"), "Run Simulation")
         self.run_btn.setObjectName("RunButton")
         self.run_btn.setFixedHeight(42)
         font = QFont()
         font.setPointSize(11)
         font.setBold(True)
         self.run_btn.setFont(font)
-        self.run_btn.setToolTip("Execute simulation with configured runtime parameters (Enter)")
+        self.run_btn.setToolTip("Execute simulation with configured runtime parameters (Ctrl+Enter)")
 
         btn_layout.addStretch()
         btn_layout.addWidget(self.run_btn, 2)
@@ -205,33 +205,33 @@ class ConfigurationPanel(QWidget):
         val_result = Validator.validate_config(config)
 
         # Update Badge
-        is_exe_valid, _ = Validator.validate_executable(self.exe_line_edit.text().strip())
-        if is_exe_valid:
-            self.validation_badge.set_badge(True, "✔ Executable Loaded")
-        else:
-            self.validation_badge.set_badge(False, "❌ Invalid executable")
+        self.validation_badge.set_badge(val_result.badge_state, val_result.badge_text)
 
         # Update Feedback Message & Run Button Status
         if val_result.is_valid:
             self.feedback_label.setText(val_result.message)
             self.feedback_label.setStyleSheet("color: #2ea44f; font-weight: bold;")
             self.run_btn.setEnabled(not self._is_running)
+        elif val_result.badge_state == "neutral":
+            self.feedback_label.setText(val_result.message)
+            self.feedback_label.setStyleSheet("color: #8b949e; font-weight: normal;")
+            self.run_btn.setEnabled(False)
         else:
             self.feedback_label.setText(f"⚠ {val_result.message}")
             self.feedback_label.setStyleSheet("color: #f85149; font-weight: bold;")
             self.run_btn.setEnabled(False)
 
-        # Update Live Command Preview
-        if config:
-            preview_str = CommandBuilder.build_preview_string(config)
-            self.command_preview.set_command_text(preview_str)
+        # Update Live Command Preview with relative preview string and absolute tooltip
+        if config and config.executable_path.strip():
+            relative_str = CommandBuilder.build_preview_string(config, relative=True)
+            full_str = CommandBuilder.build_preview_string(config, relative=False)
+            self.command_preview.set_command_text(relative_str, tooltip_path=full_str)
             self.config_changed.emit(config)
         else:
-            self.command_preview.set_command_text("(Select executable to view command preview)")
+            self.command_preview.set_command_text("(Select executable to view command preview)", tooltip_path=None)
 
     def _on_run_clicked(self) -> None:
         if self._is_running:
-            # If running, click requests cancellation
             self.cancel_requested.emit()
             return
 
@@ -262,12 +262,15 @@ class ConfigurationPanel(QWidget):
         self.stop_spin.setEnabled(not running)
 
         if running:
-            self.run_btn.setText("⏹ Cancel Simulation")
+            self.run_btn.setIcon(QIcon("resources/icons/stop.svg"))
+            self.run_btn.setText("Cancel Simulation")
             self.run_btn.setObjectName("CancelButton")
             self.run_btn.setStyleSheet("background-color: #da3633; color: white;")
             self.run_btn.setEnabled(True)
         else:
-            self.run_btn.setText("▶ Run Simulation")
+            self.run_btn.setIcon(QIcon("resources/icons/play.svg"))
+            self.run_btn.setText("Run Simulation")
             self.run_btn.setObjectName("RunButton")
             self.run_btn.setStyleSheet("")
             self._revalidate()
+

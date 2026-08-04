@@ -37,24 +37,39 @@ class CommandBuilder:
         return args
 
     @classmethod
-    def build_preview_string(cls, config: SimulationConfig) -> str:
+    def build_preview_string(cls, config: SimulationConfig, relative: bool = True) -> str:
         """Generates clean human-readable command string preview for GUI display.
 
-        Example output:
+        Example output (relative=True):
             TwoConnectedTanks.exe -override=startTime=0,stopTime=4
+
+        Example output (relative=False):
+            "C:/path/to/TwoConnectedTanks.exe" -override=startTime=0,stopTime=4
+
 
         Args:
             config: SimulationConfig instance.
+            relative: If True, uses clean executable basename for compact UI preview.
 
         Returns:
             Formatted CLI command string preview.
         """
-        args = cls.build_command_args(config)
-        if not args:
+        if not config or not config.executable_path:
             return "(Select executable to view command preview)"
 
+        override_flag = config.to_override_flag()
+
+        if relative:
+            exe_display = config.executable_name
+            if exe_display.endswith(".py"):
+                tokens = ["python", exe_display, override_flag]
+            else:
+                tokens = [exe_display, override_flag]
+        else:
+            tokens = cls.build_command_args(config)
+
         formatted_tokens = []
-        for token in args:
+        for token in tokens:
             if " " in token:
                 formatted_tokens.append(f'"{token}"')
             else:
