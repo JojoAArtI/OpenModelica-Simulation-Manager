@@ -18,6 +18,7 @@ from PyQt6.QtWidgets import (
     QLabel,
     QMessageBox,
     QApplication,
+    QTabWidget,
 )
 
 from src.utils.constants import (
@@ -38,6 +39,7 @@ from src.models.simulation_result import SimulationResult
 from src.ui.toolbar import MainToolBar
 from src.ui.configuration_panel import ConfigurationPanel
 from src.ui.console_panel import ConsolePanel
+from src.ui.results_panel import ResultsPanel
 from src.ui.status_bar import StatusBarController
 
 
@@ -104,7 +106,7 @@ class HistoryDialog(QDialog):
 
 
 class MainWindow(QMainWindow):
-    """Main window orchestrating Toolbar, ConfigurationPanel, ConsolePanel, and ExecutionService."""
+    """Main window orchestrating Toolbar, ConfigurationPanel, ConsolePanel, ResultsPanel, and ExecutionService."""
 
     def __init__(self, logger_service: LoggerService) -> None:
         super().__init__()
@@ -115,7 +117,7 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon("resources/icons/openmodelica.svg"))
-        self.resize(1000, 750)
+        self.resize(1050, 800)
 
         self._init_ui()
         self._connect_signals()
@@ -132,11 +134,18 @@ class MainWindow(QMainWindow):
         # 2. Main Vertical Splitter
         self.splitter = QSplitter(Qt.Orientation.Vertical)
         self.config_panel = ConfigurationPanel(self)
+
+        # Bottom Tab Widget (Console + Results Plotter)
+        self.bottom_tabs = QTabWidget()
         self.console_panel = ConsolePanel(self)
+        self.results_panel = ResultsPanel(self)
+
+        self.bottom_tabs.addTab(self.console_panel, QIcon("resources/icons/info.svg"), "Execution Console")
+        self.bottom_tabs.addTab(self.results_panel, QIcon("resources/icons/openmodelica.svg"), "Results & Analysis Plot")
 
         self.splitter.addWidget(self.config_panel)
-        self.splitter.addWidget(self.console_panel)
-        self.splitter.setSizes([380, 370])
+        self.splitter.addWidget(self.bottom_tabs)
+        self.splitter.setSizes([360, 440])
         self.splitter.setCollapsible(0, False)
         self.splitter.setCollapsible(1, False)
 
@@ -183,7 +192,6 @@ class MainWindow(QMainWindow):
         self.shortcut_esc = QShortcut(QKeySequence(Qt.Key.Key_Escape), self)
         self.shortcut_esc.activated.connect(self._cancel_simulation)
 
-
     def _load_settings(self) -> None:
         # Window Geometry & Splitter state
         geom = self.settings_manager.load_window_geometry()
@@ -214,7 +222,6 @@ class MainWindow(QMainWindow):
             if is_valid:
                 self.config_panel.set_executable_path(r)
                 break
-
 
     def closeEvent(self, event) -> None:
         """Saves geometry and application state before closing."""
@@ -250,6 +257,7 @@ class MainWindow(QMainWindow):
             qss_content = style_path.read_text(encoding="utf-8")
             QApplication.instance().setStyleSheet(qss_content)
             self.settings_manager.set_theme(theme_name)
+            self.results_panel.set_theme(theme_name)
         else:
             self.logger.warning(f"Stylesheet not found: {style_path}")
 
@@ -285,6 +293,7 @@ class MainWindow(QMainWindow):
         self.storage_service.save_result(result)
 
         if result.is_success:
+            self.results_panel.load_stdout_data(result.stdout)
             self.status_controller.set_completed_success(result.execution_time_seconds)
             self.console_panel.append_info(
                 f"\n=== SIMULATION COMPLETED SUCCESSFULLY (Duration: {format_duration(result.execution_time_seconds)}) ===\n"
@@ -329,6 +338,7 @@ class MainWindow(QMainWindow):
             f"- Non-blocking asynchronous execution<br>"
             f"- Drag and Drop executable loading<br>"
             f"- Live simulation time validation (0 &lt;= start &lt; stop &lt; 5)<br>"
+            f"- Interactive Matplotlib Results Plotter & CSV/PNG Exporter<br>"
             f"- Dark & Light engineering themes<br>"
             f"- Monospace streaming console log viewer</p>",
         )
