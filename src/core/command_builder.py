@@ -25,10 +25,15 @@ class CommandBuilder:
         exe_path = str(Path(config.executable_path).resolve())
         override_flag = config.to_override_flag()
 
-        # If it's a Python script, prefix with Python interpreter
-        if exe_path.endswith(".py"):
-            args = [sys.executable, exe_path, override_flag]
+        # Check if running inside a PyInstaller frozen binary
+        is_frozen = getattr(sys, "frozen", False)
+
+        if exe_path.lower().endswith(".py"):
+            # Use 'python' executable instead of sys.executable when frozen to prevent re-launching self
+            python_bin = "python" if is_frozen else sys.executable
+            args = [python_bin, exe_path, override_flag]
         else:
+            # Standalone binaries (.exe, .bat, etc.) run directly
             args = [exe_path, override_flag]
 
         if config.custom_args:
@@ -46,7 +51,6 @@ class CommandBuilder:
         Example output (relative=False):
             "C:/path/to/TwoConnectedTanks.exe" -override=startTime=0,stopTime=4
 
-
         Args:
             config: SimulationConfig instance.
             relative: If True, uses clean executable basename for compact UI preview.
@@ -61,7 +65,7 @@ class CommandBuilder:
 
         if relative:
             exe_display = config.executable_name
-            if exe_display.endswith(".py"):
+            if exe_display.lower().endswith(".py"):
                 tokens = ["python", exe_display, override_flag]
             else:
                 tokens = [exe_display, override_flag]

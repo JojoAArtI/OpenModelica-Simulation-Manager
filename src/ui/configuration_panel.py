@@ -64,7 +64,9 @@ class ConfigurationPanel(QWidget):
         self.exe_line_edit = DropLineEdit()
         self.exe_line_edit.setReadOnly(True)  # Per specification: read-only textbox
 
-        self.browse_btn = QPushButton(QIcon("resources/icons/folder.svg"), "Browse...")
+        from src.utils.helpers import get_resource_path
+
+        self.browse_btn = QPushButton(QIcon(str(get_resource_path("resources/icons/folder.svg"))), "Browse...")
         self.browse_btn.setToolTip("Browse filesystem for OpenModelica executable (Ctrl+O)")
 
         self.recent_combo = QComboBox()
@@ -116,7 +118,8 @@ class ConfigurationPanel(QWidget):
 
         # 5. Run Button Row
         btn_layout = QHBoxLayout()
-        self.run_btn = QPushButton(QIcon("resources/icons/play.svg"), "Run Simulation")
+        self.run_btn = QPushButton(QIcon(str(get_resource_path("resources/icons/play.svg"))), "Run Simulation")
+
         self.run_btn.setObjectName("RunButton")
         self.run_btn.setFixedHeight(42)
         font = QFont()
@@ -261,16 +264,19 @@ class ConfigurationPanel(QWidget):
         self.start_spin.setEnabled(not running)
         self.stop_spin.setEnabled(not running)
 
+        from src.utils.helpers import get_resource_path
+
         if running:
-            self.run_btn.setIcon(QIcon("resources/icons/stop.svg"))
+            self.run_btn.setIcon(QIcon(str(get_resource_path("resources/icons/stop.svg"))))
             self.run_btn.setText("Cancel Simulation")
             self.run_btn.setObjectName("CancelButton")
             self.run_btn.setStyleSheet("background-color: #da3633; color: white;")
             self.run_btn.setEnabled(True)
         else:
-            self.run_btn.setIcon(QIcon("resources/icons/play.svg"))
+            self.run_btn.setIcon(QIcon(str(get_resource_path("resources/icons/play.svg"))))
             self.run_btn.setText("Run Simulation")
             self.run_btn.setObjectName("RunButton")
             self.run_btn.setStyleSheet("")
+
             self._revalidate()
 

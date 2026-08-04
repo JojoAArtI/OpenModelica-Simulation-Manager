@@ -1,6 +1,7 @@
 """Main entry point for OpenModelica Simulation Manager application."""
 
 import sys
+import multiprocessing
 from pathlib import Path
 
 # Add project root to sys.path to support src imports when launched from any CWD
@@ -17,6 +18,8 @@ from src.utils.constants import APP_NAME, ORGANIZATION_NAME
 
 def main() -> int:
     """Initializes and runs the PyQt6 OpenModelica Simulation Manager desktop application."""
+    multiprocessing.freeze_support()
+
     # Create QApplication
     app = QApplication(sys.argv)
     app.setApplicationName(APP_NAME)
@@ -34,4 +37,5 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    multiprocessing.freeze_support()
     sys.exit(main())

@@ -6,6 +6,33 @@ from pathlib import Path
 from typing import Union
 
 
+def get_resource_path(relative_path: str) -> Path:
+    """Gets absolute path to resource file, supporting PyInstaller frozen bundle directory (sys._MEIPASS).
+
+    Args:
+        relative_path: Relative path string e.g. "resources/styles/dark_theme.qss".
+
+    Returns:
+        Path object pointing to existing resource file.
+    """
+    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+        base_path = Path(sys._MEIPASS)
+    else:
+        # src/utils/helpers.py -> project root
+        base_path = Path(__file__).resolve().parent.parent.parent
+
+    target = base_path / relative_path
+    if target.exists():
+        return target
+
+    # Fallback to CWD
+    cwd_target = Path.cwd() / relative_path
+    if cwd_target.exists():
+        return cwd_target
+
+    return target
+
+
 def format_duration(seconds: float) -> str:
     """Format duration seconds into human-readable string.
 

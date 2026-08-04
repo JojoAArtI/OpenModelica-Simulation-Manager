@@ -17,7 +17,7 @@ def main():
     project_root = Path(__file__).resolve().parent
     main_py = project_root / "src" / "main.py"
     resources_dir = project_root / "resources"
-    icon_path = resources_dir / "icons" / "openmodelica.svg"
+    icon_path = resources_dir / "icons" / ("openmodelica.ico" if sys.platform == "win32" else "openmodelica.png")
 
     if not main_py.exists():
         print(f"[ERROR] main.py not found at: {main_py}")
