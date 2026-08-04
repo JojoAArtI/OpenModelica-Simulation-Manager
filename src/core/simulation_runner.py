@@ -1,9 +1,11 @@
 """Asynchronous worker executing OpenModelica simulation subprocess."""
 
 import os
+import sys
 import subprocess
 import threading
 import time
+
 from typing import List, Optional
 from PyQt6.QtCore import QObject, pyqtSignal
 
@@ -71,6 +73,10 @@ class SimulationRunner(QObject):
             env = os.environ.copy()
             env["PYTHONUNBUFFERED"] = "1"
 
+            creation_flags = 0
+            if sys.platform == "win32":
+                creation_flags = getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000)
+
             self._process = subprocess.Popen(
                 command_args,
                 stdout=subprocess.PIPE,
@@ -79,7 +85,9 @@ class SimulationRunner(QObject):
                 bufsize=1,
                 universal_newlines=True,
                 env=env,
+                creationflags=creation_flags,
             )
+
 
             # Spawn concurrent reader threads for stdout and stderr to prevent deadlocks
             t_stdout = threading.Thread(
