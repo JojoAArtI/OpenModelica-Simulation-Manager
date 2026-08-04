@@ -56,7 +56,6 @@ class ExecutionService(QObject):
         # Thread cleanup
         self._runner.execution_finished.connect(self._thread.quit)
         self._thread.finished.connect(self._cleanup)
-        self._thread.finished.connect(self._thread.deleteLater)
 
         self._thread.start()
         self.simulation_started.emit()
@@ -66,6 +65,9 @@ class ExecutionService(QObject):
         """Requests cancellation of active simulation worker."""
         if self._runner and self.is_running:
             self._runner.cancel()
+            if self._thread:
+                self._thread.quit()
+                self._thread.wait(1000)
 
     def _on_finished(self, result: SimulationResult) -> None:
         """Handles completion signal from runner and forwards to UI listeners."""
@@ -73,5 +75,10 @@ class ExecutionService(QObject):
 
     def _cleanup(self) -> None:
         """Resets thread and runner references safely after thread finishes."""
+        if self._thread:
+            if self._thread.isRunning():
+                self._thread.quit()
+                self._thread.wait(1000)
+            self._thread.deleteLater()
         self._runner = None
         self._thread = None
